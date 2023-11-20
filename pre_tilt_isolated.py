@@ -4,8 +4,6 @@ import math
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import csv
-reerre
-
 from scipy.optimize import curve_fit
  ###Peak detection and analysis
 from scipy.signal import find_peaks
@@ -14,7 +12,89 @@ from scipy import interpolate
 from scipy.interpolate import UnivariateSpline
 
 
+def cauchy_findinder(a0, b0, c0, d0, ae, be, ce, de, lamb_a, lamb_b, lamb_c,
+                     lamb_d):  # finds Cauchy coeffs. based on no and ne values
 
+    # initial guess values
+    C0_g = 1.5
+    C1_g = 0
+    C2_g = 0
+
+    # C00_g=1.7
+    # C01_g=0
+    # C02_g=0.001
+
+    # sample data
+    x = np.array([lamb_a * 0.001, lamb_b * 0.001, lamb_c * 0.001, lamb_d * 0.001])  # scaled from nm to um
+    y = np.array([[a0, b0, c0, d0], [ae, be, ce, de]])
+
+    Cauchy_all = []
+    for i in range(0, 2):
+        # define type of function to search
+        def chy_func(x, C0, C1, C2):
+            return C0 + (C1 / x ** 2) + (C2 / x ** 4)
+
+        # curve fit
+        p0 = (1.0, 1, 0)  # starting search koefs
+        opt, pcov = curve_fit(chy_func, x, y[i], p0)
+        a, k, b = opt
+
+        # test result
+        x2 = np.linspace(lamb_a * 0.001, lamb_d * 0.001, 1000)
+        y2 = chy_func(x2, a, k, b)
+        fig, ax = plt.subplots()
+        ax.plot(x2, y2, color='r', label='Fit. func: $f(x) = %.3f + ( {%.3f x^2} % + .3f$ x^4)' % (a, k, b))
+        ax.plot(x, y[i], 'bo', label='data')
+        ax.legend(loc='best')
+        plt.xlabel('nm/1000')
+        plt.ylabel('n')
+        plt.show()
+
+        Cauchy_all.append(opt)
+
+    return Cauchy_all
+
+
+def cauchy_findinder_expanded(a0, b0, c0, d0, e0, f0, g0, h0, i0, j0, k0, ae, be, ce, de, ee, fe, ge, he, ie, je, ke,
+                              lamb_a, lamb_b, lamb_c, lamb_d, lamb_e, lamb_f, lamb_g, lamb_h, lamb_i, lamb_j,
+                              lamb_k):  # advanced
+
+    # initial guess values
+    C0_g = 1.5
+    C1_g = 0
+    C2_g = 0
+
+    # sample data
+    x = np.array(
+        [lamb_a * 0.001, lamb_b * 0.001, lamb_c * 0.001, lamb_d * 0.001, lamb_e * 0.001, lamb_f * 0.001, lamb_g * 0.001,
+         lamb_h * 0.001, lamb_i * 0.001, lamb_j * 0.001, lamb_k * 0.001])  # scaled from nm to um
+    y = np.array([[a0, b0, c0, d0, e0, f0, g0, h0, i0, j0, k0], [ae, be, ce, de, ee, fe, ge, he, ie, je, ke]])
+
+    Cauchy_all = []
+    for i in range(0, 2):
+        # define type of function to search
+        def chy_func(x, C0, C1, C2):
+            return C0 + (C1 / x ** 2) + (C2 / x ** 4)
+
+        # curve fit
+        p0 = (1.0, 1, 0)  # starting search koefs
+        opt, pcov = curve_fit(chy_func, x, y[i], p0)
+        a, k, b = opt
+
+        # test result
+        x2 = np.linspace(lamb_a * 0.001, lamb_k * 0.001, 1000)
+        y2 = chy_func(x2, a, k, b)
+        fig, ax = plt.subplots()
+        ax.plot(x2, y2, color='r', label='Fit. func: $f(x) = %.3f + ( {%.3f x^2} % + .3f$ x^4)' % (a, k, b))
+        ax.plot(x, y[i], 'bo', label='data')
+        ax.legend(loc='best')
+        plt.xlabel('nm/1000')
+        plt.ylabel('n')
+        plt.show()
+
+        Cauchy_all.append(opt)
+
+    return Cauchy_all
 chy=cauchy_findinder_expanded(1.532,1.528,1.523,1.518,1.514,1.508,1.503,1.502,1.501,1.496,1.494, 1.848,1.833,1.814,1.792,1.776,1.765,1.751,1.746,1.743,1.730,1.724,450,475,500,525,550,575,600,625,650,675,700) #Cauchy values for HTW111700-200-LC  - simulation data
 
 PretiltFileName=r'C:\Users\User\PycharmProjects\cell_gap\pretilt_temp.xlsx'
