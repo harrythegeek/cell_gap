@@ -17,7 +17,7 @@ from scipy.interpolate import UnivariateSpline
 
 chy=cauchy_findinder_expanded(1.532,1.528,1.523,1.518,1.514,1.508,1.503,1.502,1.501,1.496,1.494, 1.848,1.833,1.814,1.792,1.776,1.765,1.751,1.746,1.743,1.730,1.724,450,475,500,525,550,575,600,625,650,675,700) #Cauchy values for HTW111700-200-LC  - simulation data
 
-PretiltFileName=r''
+PretiltFileName=r'C:\Users\User\PycharmProjects\cell_gap\pretilt_temp.xlsx'
 def main_pretilt():  # commenting out for speed
     wave_nm = np.linspace(237.73, 800.24, 1623)
     # df = pd.read_excel("Lambda-expanded.xlsx")
