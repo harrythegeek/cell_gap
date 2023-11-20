@@ -4,6 +4,7 @@ import math
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import csv
+reerre
 
 from scipy.optimize import curve_fit
  ###Peak detection and analysis
