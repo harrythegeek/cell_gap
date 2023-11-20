@@ -12,35 +12,7 @@ from scipy.signal import find_peaks
 from scipy.signal import savgol_filter
 from scipy import interpolate
 from scipy.interpolate import UnivariateSpline
-# C0=1.499703612
-# C1=0.0061723
-# C2=0.0
 
-# C00=1.719165086
-# C01=0.014771947
-# C02=2.47E-03
-
-########################################
-# lista=pd.read_csv(r"T:\users\PatrickP\Measuring Lens opd\mid-4L-4H.txt", sep=",", header=None)[0].tolist() 
-# listb=lista[13:] #shorter version
-# # PretiltFileName=r'\\fefs01\Technical3\data\R\R000\GoldenSample-pretilt\GoldenSample-90deg.xlsx'
-
-# p1_data=[]
-# for i in range(len(listb)):
-#     p1_data.append( listb[i].split('\t') )
-    
-# p1_data=np.array(p1_data)
-# p1_data = p1_data.astype(np.float)
-
-# p1_lambda=p1_data[:,0]
-# dat_from=760
-# dat_to=1330
-# p1_lambda=p1_lambda[dat_from:dat_to]
-# p1_data_numpy=p1_data[dat_from:dat_to]
-
-# plt.plot(p1_data_numpy)
-
-##################
 
 CellGapFileName=r'T:\users\PatrickP\UV-VIS\40umTac.Raw.csv'
 # PretiltFileName=r'\\fefs01\Technical3\data\R\R253\optical\Pre-tilt\R253-1-8.xlsx'
@@ -76,22 +48,7 @@ with open(CellGapFileName, newline='') as csvfile:
               
               
               
-              # while True:
-              #     try:
-              #       # aa[0]=np.float(aa[0][0:-1])
-                    
-              #       # aa[1]=np.float(aa[1])
-              #       # aa=np.array(aa)
-              #       # All_csv.append(aa)
-              #       break
-              #     except ValueError:
-              #       aa_new=aa[0].split(",")
-              #       aa=[np.float(aa_new[0]), np.float(aa_new[1])]
-                        
-              #       aa[1]=np.float(aa[1])
-              #       aa=np.array(aa)
-              #       All_csv.append(aa)
-   
+
 
 p1_data=np.array(All_csv)
 p1_data=p1_data[::-1]
@@ -105,82 +62,6 @@ p1_data_numpy=p1_data[:,1][dat_from:dat_to]
 
 plt.plot(p1_data_numpy)
 
-
-####ficus detrending the data code
-# slope_n=(800-750)*10+1
-# p1_lambda=np.ce(750,800,slope_n)
-# p1_lambda=p1_lambda[0:-1]
-
-# deslope_all=[]
-# for i in range(len(p1_lambda)):
-#     y_slope=0.6046*p1_lambda[i]-422.2
-#     deslope_all.append(y_slope)
-    
-# p1_data_numpy_new=[]
-# for i in range(len(p1_lambda)): 
-#         p1_data_numpy_new.append( np.float(p1_data_numpy[i]+deslope_all[-i-1]) )
-
-# plt.plot(p1_data_numpy_new)
-
-# p1_data_numpy=p1_data_numpy_new # new y desloped
-# ##########################
-
-
-# p1_data=pd.read_excel(r"\\fefs01\Technical3\users\PatrickP\Hyperspectral\Test58-FOCALPLANEBOTTOM-vL2-Vh6-LENSON-flat-narrow-litroom-5nmsteps\PointA.xlsx")
-
-# # # p1_data=pd.read_excel(r"T:\users\PatrickP\CellGapScans\Surround-vs-middle\new lc split\Q945-5-6 -mid.xlsx")
-
-# p1_lambda=np.array(p1_data["nm"]) #indexing to take only 430nm to 670nm data 6878:1393
-
-# p1_lambda=np.array(p1_data["nm"][0:-150])#[758:1300]) #indexing to take only 430nm to 670nm data 6878:1393
-# #prev[692:1394]
-
-# dat_col=len(p1_data.columns)
-
-# p1_data_numpy=np.array(p1_data)#[758:1300]) #reformating for for loop 688:1393
-#
-# plt.plot(p1_lambda,p1_data_numpy)
-# ==================================================
-# import os
-
-# # folder path
-# # dir_path = r'T:\users\PatrickP\CellGapScans\Surround-vs-middle'
-# dir_path=r'T:\users\PatrickP\Thermoformed-Experiments'
-
-# # list to store files
-# all_fs = []
-# # Iterate directory
-# for file in os.listdir(dir_path):
-#     # check only text files
-#     if file.endswith('.txt'):
-#         all_fs.append(file)
-# print(all_fs)
-
-# p_all_data=[] #work in progress
-# for i in range(len(all_fs)): #i=2
-#     f = open(dir_path + '\\' + all_fs[i], "r")
-#     content = f.read().splitlines()
-#     del content[0:14]
-#     # content_arr=np.float(content)
-    
-#     content_arr_all=[]
-#     content_arr_all=np.empty([len(content),2])
-#     for j in range(len(content)): #i=0
-#         # wave=float(content[i].split("\t")[0]) #wavelength
-#         # I=float(content[i].split("\t")[1]) #I
-#         content_arr_all[j,0]=float(content[j].split("\t")[0]) #wavelength j=1
-#         content_arr_all[j,1]=float(content[j].split("\t")[1]) #I
-    
-    
-#     f.close()
-#     p_all_data.append(dir_path + all_fs[i])
-    
-# p1_lambda=np.array(content_arr_all[:,0][720:1400]) 
-# dat_col=1
-# # p1_data_numpy=np.array(content_arr_all[:,1][600:1300]) #reformating for for loop 688:1393
-# p1_data_numpy=content_arr_all[720:1400]
-# plt.plot(p1_data_numpy[:,0],p1_data_numpy[:,1])
-# ===================================================
 
 def cauchy_findinder(a0,b0,c0,d0,ae,be,ce,de,lamb_a,lamb_b,lamb_c,lamb_d): #finds Cauchy coeffs. based on no and ne values
     
@@ -227,33 +108,12 @@ def cauchy_findinder(a0,b0,c0,d0,ae,be,ce,de,lamb_a,lamb_b,lamb_c,lamb_d): #find
 
 def cauchy_findinder_expanded(a0,b0,c0,d0,e0,f0,g0,h0,i0,j0,k0,ae,be,ce,de,ee,fe,ge,he,ie,je,ke,lamb_a,lamb_b,lamb_c,lamb_d,lamb_e,lamb_f,lamb_g,lamb_h,lamb_i,lamb_j,lamb_k):#advanced
 
-    #testing
-    #HTW114200-100LC
-    # a0=1.5209 #no
-    # b0=1.5098 #no
-    # c0=1.5068 #no
-    # d0=1.5015 #no
-
-    
-    # ae=1.8524 #ne
-    # be=1.7951 #ne
-    # ce=1.7843 #ne
-    # de=1.7672 #ne
-    
-    # lamb_a=450 #nm
-    # lamb_b=546 #nm
-    # lamb_c=589 #nm
-    # lamb_d=650 #nm
-    
     #initial guess values
     C0_g=1.5
     C1_g=0
     C2_g=0
     
-    # C00_g=1.7
-    # C01_g=0
-    # C02_g=0.001
-    
+
     #sample data
     x = np.array([lamb_a*0.001,lamb_b*0.001,lamb_c*0.001,lamb_d*0.001,lamb_e*0.001,lamb_f*0.001,lamb_g*0.001,lamb_h*0.001,lamb_i*0.001,lamb_j*0.001,lamb_k*0.001]) #scaled from nm to um
     y = np.array([[a0,b0,c0,d0,e0,f0,g0,h0,i0,j0,k0], [ae,be,ce,de,ee,fe,ge,he,ie,je,ke]])
