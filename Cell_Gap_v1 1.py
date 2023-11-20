@@ -174,42 +174,25 @@ def main_pretilt(): #commenting out for speed
     for i in range(len(wave_um)):  
         no=chy[0][0] + (chy[0][1]/wave_um[i]**2) + (chy[0][2]/wave_um[i]**4)
         ne= chy[1][0] + (chy[1][1]/wave_um[i]**2) + (chy[1][2]/wave_um[i]**4)
-        
-        
-        # no=C0 + (C1/wave_um[i]**2) + (C2/wave_um[i]**4)
-        # ne= C00 + (C01/wave_um[i]**2) + (C02/wave_um[i]**4)
-        
+
         no_all.append(no)
         ne_all.append(ne)
-      
-    
-    # plt.plot(no_all)
-    # plt.plot(ne_all)
-    
-    # tilt_data=pd.read_excel("pre-tilt B-All.xlsx")
-    tilt_data = pd.read_excel(PretiltFileName)
 
-    # tilt_data=pd.read_excel("R017-4-12-green-1.xlsx") 
+    tilt_data = pd.read_excel(PretiltFileName)
     tilt_angle=np.array(tilt_data["Angles"])
     tilt_green=np.array(tilt_data["Green"])
-    # tilt_green=np.array(tilt_data["test"])
-    # tilt_green=np.array(tilt_data["SampleR017 4"])
     tilt_blue=np.array(tilt_data["Blue"])
     tilt_red=np.array(tilt_data["Red"])
     
     
     
     green_skew=tilt_data["Green"].skew()
-    # green_skew=tilt_data["test"].skew()
-    # plt.plot(tilt_angle,tilt_green) #green
     print(round(green_skew,3))
     
     blue_skew=tilt_data["Blue"].skew()
-    # plt.plot(tilt_angle,tilt_blue) #blue
     print(round(blue_skew,3))
     
     red_skew=tilt_data["Red"].skew()
-    # plt.plot(tilt_angle,tilt_red) #red
     print(round(red_skew,3))
     
     p1_intensity_smoothed=savgol_filter(tilt_green,15,1) # p1_intensity=-1*p1_intensity #normall 11,1
@@ -269,12 +252,7 @@ def main_pretilt(): #commenting out for speed
     
     green_centre=nearest_to_0[ nearest_to_0_abs.index(min(nearest_to_0_abs)) ]# finds peak or trough closes to 0 and uses it for subsequent analysis
     print(green_centre)
-    # if len(peaks_waveltilt2)==2:#Relying on two peaks with assumed middle in between them
-    #     green_centre=peaks_waveltilt[0]+peaks_waveltilt[1] 
-    # if len(peaks_waveltilt)==2:#Relying on two peaks with assumed middle in between them
-    #     green_centre=peaks_waveltilt2[0]+peaks_waveltilt2[1]  #green_centre=0
-    
-    ############
+
     p1_intensity_smoothed=savgol_filter(tilt_blue,7,1) # p1_intensity=-1*p1_intensity
     p1_intensity_unsmoothed=tilt_blue #unsmoothed
     plt.plot(tilt_angle,p1_intensity_unsmoothed)
@@ -399,13 +377,7 @@ def main_pretilt(): #commenting out for speed
     
     red_centre=nearest_to_0[ nearest_to_0_abs.index(min(nearest_to_0_abs)) ]# finds peak or trough closes to 0 and uses it for subsequent analysis
     print(red_centre)
-    # if len(peaks_waveltilt2)==2:#Relying on two peaks with assumed middle in between them
-    #     red_centre=peaks_waveltilt[0]+peaks_waveltilt[1] 
-    # if len(peaks_waveltilt)==2:#Relying on two peaks with assumed middle in between them
-    #     red_centre=peaks_waveltilt2[0]+peaks_waveltilt2[1]  #red_centre=8
 
-    ##########################
-    
     plt.plot(tilt_angle,tilt_green,color='g') #green
     plt.axvline(green_centre,color='k')
     plt.ylabel('Intensity')
@@ -505,18 +477,7 @@ def main_pretilt(): #commenting out for speed
         # neff_delta_all.append(neff_delta)
         delta_n_all.append(delta_n)
         
-        
-    # plt.plot(delta_neff_all, '*')
-    
-    # plt.plot(wave_nm,no_all, label="no")
-    # plt.ylabel('#') #no
-    # plt.xlabel('Wavelength (nm)')
-    # plt.plot(wave_nm,ne_all, label="ne")
-    # plt.legend(loc="upper right")
-    # plt.ylabel('#') #ne
-    # plt.xlabel('Wavelength (nm)')
-    # plt.show()
-    
+
     return (avg_pretilt,delta_neff_all,wave_nm,no_all,neff_all,wave_nm)
 
 # main_pretilt()
@@ -533,42 +494,7 @@ neff_all=main_pretilt()[4]
 
 wave_nm=main_pretilt()[5]
 
-# #air only
-# delta_neff_all=np.ones([len(delta_neff_all),1])
-# neff_all=np.ones([len(neff_all),1])
-# no_all=np.ones([len(no_all),1])
 
-
-# neff_all=1.5*neff_all #test
-# no_all=1.5*no_all #test
-# delta_neff_all=1*delta_neff_all #test
-
-###############
-
- 
-# p1_data=pd.read_excel("P1.xlsx")
-# p1_lambda=np.array(p1_data["lambda"])
-# p1_intensity=np.array(p1_data["P1"])
-
-
-
-#p1_data=pd.read_excel(r'C:\Users\Patrikas.Prusinskas\OneDrive - Flexenable\Desktop\MicroscopeData\Q9890-3-16r\Q9890-3-16r.xlsx')
-# p1_data=pd.read_excel(r"T:\users\PatrickP\UV-VIS-ITO\Scan - Lambda 850+ 29 March 2022 15_00 GMT Summer Time\50pSlitWidth-Tungstenonly-SR.xlsx")
-# p1_data=pd.read_excel(r"T:\users\PatrickP\CellGapScans\UV-VIS-ITO\Scan - Lambda 850+ 29 March 2022 15_00 GMT Summer Time\50pSlitWidth-Tungstenonly-SR.xlsx")
-# p1_data=pd.read_excel(r"C:\Users\Patrikas.Prusinskas\.spyder-py3\10um-ThorlabsCell.xlsx")
-# p1_data=pd.read_excel(r"T:\users\PatrickP\CellGapScans\0p1 vs 1nm scans Q945-5-5\Q945-5-5-1nm_CellGap.xlsx")
-# p1_data=pd.read_excel(r"T:\users\PatrickP\CellGapScans\3\Q929-4-17-1d-15um-CellGapScan - On15.xlsx")
-
-
-# p1_lambda=np.array(p1_data["lambda"][128:len(["lambda"]) ]) #indexing to take only 430nm to 670nm data 6878:1393
-# p1_lambda=np.array(["lambda"]) #indexing to take only 430nm to 670nm data 6878:1393
-
-# plt.plot(_numpy[:,i][128:len(_numpy[:,i])],'-')
-
-# dat_col=len(.columns)
-
-# _numpy=np.array(p1_data[128:len(p1_data["lambda"]) ]) #reformating for for loop 688:1393
-# p1_data_numpy=np.array(p1_data) #reformating for for loop 688:1393
 dat_col=1
 all_wave_I_pos_neg=[]
 for i in range(1,dat_col+1): #skips x axis data i=1
@@ -614,14 +540,7 @@ for i in range(1,dat_col+1): #skips x axis data i=1
 
         plt.plot(p1_lambda,p1_intensity)
         plt.show()
-        
 
-        # p1_labmda_interp=np.ce(p1_lambda[0], p1_lambda[-1], num=1001, endpoint=True)
-        # p1_intensity_smoothed=interpolate.interp1d(p1_lambda,p1_intensity_smoothed_initial, kind='linear')
-        
-        # p1_intensity_smoothed=[]
-        # for p in range(len(p1_labmda_interp)):
-        #     p1_intensity_smoothed.append( np.interp(p1_labmda_interp[p],p1_lambda,p1_intensity_smoothed_initial)) #interpolated intenstsity
         
         
         plt.plot(p1_labmda_interp,p1_intensity_smoothed,'-')
