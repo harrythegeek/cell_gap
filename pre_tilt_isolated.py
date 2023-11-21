@@ -11,7 +11,7 @@ from scipy.signal import savgol_filter
 from scipy import interpolate
 from scipy.interpolate import UnivariateSpline
 
-#make a change
+
 
 
 def cauchy_findinder(a0, b0, c0, d0, ae, be, ce, de, lamb_a, lamb_b, lamb_c,
@@ -92,6 +92,7 @@ def cauchy_findinder_expanded(a0, b0, c0, d0, e0, f0, g0, h0, i0, j0, k0, ae, be
         ax.legend(loc='best')
         plt.xlabel('nm/1000')
         plt.ylabel('n')
+        plt.title('expanded cauchy')
         plt.show()
 
         Cauchy_all.append(opt)
@@ -99,7 +100,7 @@ def cauchy_findinder_expanded(a0, b0, c0, d0, e0, f0, g0, h0, i0, j0, k0, ae, be
     return Cauchy_all
 chy=cauchy_findinder_expanded(1.532,1.528,1.523,1.518,1.514,1.508,1.503,1.502,1.501,1.496,1.494, 1.848,1.833,1.814,1.792,1.776,1.765,1.751,1.746,1.743,1.730,1.724,450,475,500,525,550,575,600,625,650,675,700) #Cauchy values for HTW111700-200-LC  - simulation data
 
-PretiltFileName=r'pretilt_temp.xlsx'
+PretiltFileName=r'C:\Users\Harry.Delalis\OneDrive - Flexenable\Desktop\salamander_prettrial\real panel 1\xlsx files\salamander_pretrial_RN4524_panel_01_cell_21.xlsx'
 def main_pretilt():  # commenting out for speed
     wave_nm = np.linspace(237.73, 800.24, 1623)
     # df = pd.read_excel("Lambda-expanded.xlsx")
@@ -127,6 +128,7 @@ def main_pretilt():  # commenting out for speed
     tilt_green = np.array(tilt_data["Green"])
     tilt_blue = np.array(tilt_data["Blue"])
     tilt_red = np.array(tilt_data["Red"])
+
 
     green_skew = tilt_data["Green"].skew() #skew is a measurement of assymetry for a distribution
     print('green skew')
@@ -210,7 +212,8 @@ def main_pretilt():  # commenting out for speed
 
     green_centre = nearest_to_0[nearest_to_0_abs.index(
         min(nearest_to_0_abs))]  # finds peak or trough closes to 0 and uses it for subsequent analysis
-    print('green center',green_centre)
+    print('green center')
+    print(green_centre)
 
     p1_intensity_smoothed = savgol_filter(tilt_blue, 7, 1)  # p1_intensity=-1*p1_intensity
     p1_intensity_unsmoothed = tilt_blue  # unsmoothed
@@ -273,6 +276,7 @@ def main_pretilt():  # commenting out for speed
     # blue_centre=min(nearest_to_0) # finds peak or trough closes to 0 and uses it for subsequent analysis
     blue_centre = nearest_to_0[nearest_to_0_abs.index(
         min(nearest_to_0_abs))]  # finds peak or trough closes to 0 and uses it for subsequent analysis
+    print('blue center')
     print(blue_centre)
     # if len(peaks_waveltilt)==2:#Relying on two peaks with assumed middle in between them
     #     blue_centre=peaks_waveltilt[0]+peaks_waveltilt[1]
@@ -341,6 +345,7 @@ def main_pretilt():  # commenting out for speed
 
     red_centre = nearest_to_0[nearest_to_0_abs.index(
         min(nearest_to_0_abs))]  # finds peak or trough closes to 0 and uses it for subsequent analysis
+    print('red center')
     print(red_centre)
 
     plt.plot(tilt_angle, tilt_green, color='g')  # green
@@ -363,6 +368,8 @@ def main_pretilt():  # commenting out for speed
 
     no_lambda_green = no_all[wave_green_match_index]
     neff_lambda_green = ne_all[wave_green_match_index]
+    print('no green',no_lambda_green)
+    print('neff green',neff_lambda_green)
     delta_green = neff_lambda_green - no_lambda_green
     pretilt_green_deg = math.asin(
         math.sin((green_centre) * math.pi / 180) / (no_lambda_green + neff_lambda_green)) * 180 / math.pi
@@ -387,6 +394,8 @@ def main_pretilt():  # commenting out for speed
 
     no_lambda_red = no_all[wave_red_match_index]
     neff_lambda_red = ne_all[wave_red_match_index]
+    print('no red',no_lambda_red)
+    print('neff red',neff_lambda_red)
     delta_red = neff_lambda_red - no_lambda_red
     pretilt_red_deg = math.asin(
         math.sin((red_centre) * math.pi / 180) / (no_lambda_red + neff_lambda_red)) * 180 / math.pi
@@ -412,6 +421,8 @@ def main_pretilt():  # commenting out for speed
 
     no_lambda_blue = no_all[wave_blue_match_index]
     neff_lambda_blue = ne_all[wave_blue_match_index]
+    print('no blue',no_lambda_blue)
+    print('neff blue',neff_lambda_blue)
     delta_blue = neff_lambda_blue - no_lambda_blue
     pretilt_blue_deg = math.asin(
         math.sin((blue_centre) * math.pi / 180) / (no_lambda_red + neff_lambda_red)) * 180 / math.pi
@@ -466,10 +477,10 @@ def main_pretilt():  # commenting out for speed
 
 avg_pretilt, delta_neff_all, wave_nm, no_all, neff_all, wave_nm = main_pretilt()
 
-print(delta_neff_all)
-print(wave_nm)
-print(no_all)
-print(neff_all)
+#print(delta_neff_all)
+#print(wave_nm)
+#print(no_all)
+#print(neff_all)
 
 
 
