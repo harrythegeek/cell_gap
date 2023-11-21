@@ -118,32 +118,45 @@ def main_pretilt():  # commenting out for speed
         ne_all.append(ne)
 
     tilt_data = pd.read_excel(PretiltFileName)
+
     tilt_angle = np.array(tilt_data["Angles"])
+
+    #these are intensities
     tilt_green = np.array(tilt_data["Green"])
     tilt_blue = np.array(tilt_data["Blue"])
     tilt_red = np.array(tilt_data["Red"])
 
-    green_skew = tilt_data["Green"].skew()
+    green_skew = tilt_data["Green"].skew() #skew is a measurement of assymetry for a distribution
+    print('green skew')
     print(round(green_skew, 3))
 
     blue_skew = tilt_data["Blue"].skew()
+    print('blue skew')
     print(round(blue_skew, 3))
 
     red_skew = tilt_data["Red"].skew()
+    print('red skew')
     print(round(red_skew, 3))
 
     p1_intensity_smoothed = savgol_filter(tilt_green, 15, 1)  # p1_intensity=-1*p1_intensity #normall 11,1
     p1_intensity_unsmoothed = tilt_green  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed)
     plt.plot(tilt_angle, p1_intensity_smoothed, '-')
+    plt.title('green smoothed and unsmoothed')
+    plt.show()
 
-    peakstilt, _ = find_peaks(p1_intensity_smoothed, distance=21, prominence=(.1))
+    peakstilt, _ = find_peaks(p1_intensity_smoothed, distance=21, prominence=(.1)) #not sure what the underscore is
+    print('peak points for green',peakstilt)
 
-    just_peakstilt = []
-    peaks_waveltilt = []
+    #here we are associating tilt angles with intensity values
+    just_peakstilt = []   #intensities
+    peaks_waveltilt = []  #angles for the above intensities
+
     for j in range(len(peakstilt)):
         just_peakstilt.append(p1_intensity_smoothed[(peakstilt[j])])
         peaks_waveltilt.append(tilt_angle[(peakstilt[j])])
+    print('just_peakstilt',just_peakstilt)
+    print('peaks_wavetilt',peaks_waveltilt)
 
     plt.plot(tilt_angle, p1_intensity_smoothed, '-')
     plt.ylabel('Intensity')
@@ -151,15 +164,21 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt, just_peakstilt, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('plot peak points on the graph')
     plt.show()
+
+
 
     #######
     p1_intensity_smoothed2 = savgol_filter(-1 * tilt_green, 15, 1)  # p1_intensity=-1*p1_intensity 11,1
     p1_intensity_unsmoothed2 = -1 * tilt_green  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed2)
     plt.plot(tilt_angle, p1_intensity_smoothed2, '-')
+    plt.title('inverse of green')
+    plt.show()
 
     peakstilt2, _ = find_peaks(p1_intensity_smoothed2, distance=15, prominence=(.01))
+
 
     just_peakstilt2 = []
     peaks_waveltilt2 = []
@@ -173,9 +192,12 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt2, just_peakstilt2, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('peaks on the green inverse graph')
     plt.show()
 
+
     peaks_troughs = [[peaks_waveltilt, just_peakstilt], [peaks_waveltilt2, just_peakstilt2]]
+    print(peaks_troughs)
 
     nearest_to_0_abs = []
     nearest_to_0 = []
@@ -186,12 +208,14 @@ def main_pretilt():  # commenting out for speed
 
     green_centre = nearest_to_0[nearest_to_0_abs.index(
         min(nearest_to_0_abs))]  # finds peak or trough closes to 0 and uses it for subsequent analysis
-    print(green_centre)
+    print('green center',green_centre)
 
     p1_intensity_smoothed = savgol_filter(tilt_blue, 7, 1)  # p1_intensity=-1*p1_intensity
     p1_intensity_unsmoothed = tilt_blue  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed)
     plt.plot(tilt_angle, p1_intensity_smoothed, '-')
+    plt.title('blue smoothed and not smoothed')
+    plt.show()
 
     peakstilt, _ = find_peaks(p1_intensity_smoothed, distance=15, prominence=(.1))
 
@@ -207,6 +231,7 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt, just_peakstilt, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('peaks for blue graph')
     plt.show()
 
     #######
@@ -214,6 +239,8 @@ def main_pretilt():  # commenting out for speed
     p1_intensity_unsmoothed2 = -1 * tilt_blue  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed2)
     plt.plot(tilt_angle, p1_intensity_smoothed2, '-')
+    plt.title('inverse blue')
+    plt.show
 
     peakstilt2, _ = find_peaks(p1_intensity_smoothed2, distance=15, prominence=(.1))
 
@@ -229,6 +256,7 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt2, just_peakstilt2, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('plot peaks on inverse blue graph')
     plt.show()
 
     peaks_troughs = [[peaks_waveltilt, just_peakstilt], [peaks_waveltilt2, just_peakstilt2]]
@@ -255,6 +283,8 @@ def main_pretilt():  # commenting out for speed
     p1_intensity_unsmoothed = tilt_red  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed)
     plt.plot(tilt_angle, p1_intensity_smoothed, '-')
+    plt.title('red smooth and unsmooth')
+    plt.show()
 
     peakstilt, _ = find_peaks(p1_intensity_smoothed, distance=20, prominence=(.5))
 
@@ -270,6 +300,7 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt, just_peakstilt, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('peaks on red graph')
     plt.show()
 
     #######
@@ -277,6 +308,8 @@ def main_pretilt():  # commenting out for speed
     p1_intensity_unsmoothed2 = -1 * tilt_red  # unsmoothed
     plt.plot(tilt_angle, p1_intensity_unsmoothed2)
     plt.plot(tilt_angle, p1_intensity_smoothed2, '-')
+    plt.title('inverse of red graph')
+    plt.show()
 
     peakstilt2, _ = find_peaks(p1_intensity_smoothed2, distance=20, prominence=(.05))
 
@@ -292,6 +325,7 @@ def main_pretilt():  # commenting out for speed
     plt.plot(peaks_waveltilt2, just_peakstilt2, 'o')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
+    plt.title('peaks on inverse graph')
     plt.show()
 
     peaks_troughs = [[peaks_waveltilt, just_peakstilt], [peaks_waveltilt2, just_peakstilt2]]
@@ -312,6 +346,7 @@ def main_pretilt():  # commenting out for speed
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
     plt.title('Green wavelength ' + str(green_centre) + " degrees", color='green')
+
 
     green = 532  # or 589?
 
@@ -336,6 +371,7 @@ def main_pretilt():  # commenting out for speed
     plt.xlabel('Tilt')
     plt.title('Red wavelength ' + str(red_centre) + " degrees", color='red')
 
+
     red = 639
 
     def closest(wave_nm, red):
@@ -357,7 +393,9 @@ def main_pretilt():  # commenting out for speed
     plt.axvline(blue_centre, color='k')
     plt.ylabel('Intensity')
     plt.xlabel('Tilt')
-    plt.title("Blue wavelength " + str(blue_centre) + " degrees", color='blue')
+    #plt.title("Blue wavelength " + str(blue_centre) + " degrees", color='blue')
+    plt.title('all graphs overlayed with centers')
+    plt.show()
 
     blue = 439
 
@@ -382,6 +420,8 @@ def main_pretilt():  # commenting out for speed
 
     avg_pretilt = (pretilt_green_deg + pretilt_red_deg + pretilt_blue_deg) / 3
     print('avg pre-tilt' + '=' + str(round(avg_pretilt, 1)))
+
+
 
     ##################
     avg_pretilt = 1.5  # 0 for testing
@@ -408,16 +448,27 @@ def main_pretilt():  # commenting out for speed
     return (avg_pretilt, delta_neff_all, wave_nm, no_all, neff_all, wave_nm)
 
 
-# main_pretilt()
+#main_pretilt()
 
-avg_pretilt = main_pretilt()[0]
+#avg_pretilt = main_pretilt()[0]
 
-delta_neff_all = main_pretilt()[1]
+#delta_neff_all = main_pretilt()[1]
 
-wave_nm = main_pretilt()[2]
+#wave_nm = main_pretilt()[2]
 
-no_all = main_pretilt()[3]
+#no_all = main_pretilt()[3]
 
-neff_all = main_pretilt()[4]
+#neff_all = main_pretilt()[4]
 
-wave_nm = main_pretilt()[5]
+#wave_nm = main_pretilt()[5]
+
+avg_pretilt, delta_neff_all, wave_nm, no_all, neff_all, wave_nm = main_pretilt()
+
+print(delta_neff_all)
+print(wave_nm)
+print(no_all)
+print(neff_all)
+
+
+
+
